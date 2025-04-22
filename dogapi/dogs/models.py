@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.urls import reverse
 
 
 class Breed(models.Model):
@@ -29,6 +30,14 @@ class Breed(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Порода"
+        verbose_name_plural = "Породы"
+
+
+    def get_absolute_url(self):
+        return reverse('breeds', kwargs={'breed_id': self.pk})
+
 
 class Dog(models.Model):
     # Класс модели представляющий конретную собаку
@@ -50,4 +59,12 @@ class Dog(models.Model):
     favorite_toy = models.CharField(max_length=100, null=True, blank=True, default='Не известна')
 
     def __str__(self):
-        return f'Собака: {self.name}, порода: {self.breed.name}'
+        return self.name
+
+    class Meta:
+        verbose_name = "Собака"
+        verbose_name_plural = "Собаки"
+
+
+    def get_absolute_url(self):
+        return reverse('dogs', kwargs={'dog_id': self.pk})
